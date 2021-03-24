@@ -73,7 +73,7 @@ export default function Header() {
                     <img
                       className="rounded-full h-8 w-8 flex"
                       src={`/images/avatars/${user.username}.jpg`}
-                      alt={`${user?.username} profile`}
+                      alt="profile pic"
                     />
                   </Link>
                 </div>
