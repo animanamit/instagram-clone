@@ -24,5 +24,28 @@ export async function getUserByUserId(userId) {
     docId: item.id
   }));
 
+  console.log("getuserbyuserid ", user);
+
   return user;
+}
+
+export async function getSuggestedProfiles(userId, following) {
+  const result = await firebase
+    .firestore()
+    .collection("users")
+    .get();
+
+  // get all users
+  // filter out yourself from list
+  // filter out ppl who you already are following
+  const res = result.docs
+    .map(user => ({ ...user.data(), docId: user.docId }))
+    .filter(
+      profile =>
+        profile.userId !== userId && !following.includes(profile.userId)
+    );
+
+  console.log("getsuggestedprofiles ", res);
+
+  return res;
 }
