@@ -24,7 +24,7 @@ export async function getUserByUserId(userId) {
     docId: item.id
   }));
 
-  console.log("getuserbyuserid ", user);
+  //   console.log("getuserbyuserid ", user);
 
   return user;
 }
@@ -45,7 +45,7 @@ export async function getSuggestedProfiles(userId, following) {
         profile.userId !== userId && !following.includes(profile.userId)
     );
 
-  console.log("getsuggestedprofiles ", res);
+  //   console.log("getsuggestedprofiles ", res);
 
   return res;
 }
@@ -55,8 +55,8 @@ export async function updateLoggedInUserFollowing(
   profileId,
   isFollowingProfile
 ) {
-  console.log("inside updateloggedinuser");
-  console.log(loggedInUserId, profileId, isFollowingProfile);
+  //   console.log("inside updateloggedinuser");
+  //   console.log(loggedInUserId, profileId, isFollowingProfile);
   return firebase
     .firestore()
     .collection("users")
@@ -78,8 +78,35 @@ export async function updateFollowedUserFollowers(
     .collection("users")
     .doc(profileDocId)
     .update({
-      following: isFollowingProfile
+      followers: isFollowingProfile
         ? FieldValue.arrayRemove(loggedInUserDocId)
         : FieldValue.arrayUnion(loggedInUserDocId)
     });
+}
+
+export async function getPhotos(userId, following) {
+  const result = await firebase
+    .firestore()
+    .collection("photos")
+    .where("userId", "in", following)
+    .get();
+
+  const userFollowedPhotos = result.docs.map(photo => ({
+    ...photo.data(),
+    docId: photo.id
+  }));
+
+  const photosWithUserDetails = await Promise.all(
+    userFollowedPhotos.map(async photo => {
+      let userLikedPhoto = false;
+      if (photo.likes.includes(userId)) {
+        userLikedPhoto = true;
+      }
+      const user = await getUserByUserId(photo.userId);
+      const { username } = user[0];
+      return { username, ...photo, userLikedPhoto };
+    })
+  );
+
+  return photosWithUserDetails;
 }

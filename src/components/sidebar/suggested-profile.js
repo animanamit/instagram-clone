@@ -18,9 +18,6 @@ export default function SuggestedProfile({
   async function handleFollowUser() {
     setFollowed(true);
 
-    // console.log("inside suggested profile");
-    // console.log(loggedInUserDocId);
-    // console.log(profileDocId);
     await updateLoggedInUserFollowing(loggedInUserDocId, profileId, false);
 
     await updateFollowedUserFollowers(profileDocId, userId, false);
