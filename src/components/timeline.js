@@ -4,10 +4,8 @@ import Post from "./post/post";
 
 export default function Timeline() {
   const { photos } = usePhotos();
-  console.log("photos", photos);
   return (
     <div className="container col-span-2">
-      timeline
       {!photos ? (
         <>
           <Skeleton count={1} width={640} height={600} className="mb-5" />
