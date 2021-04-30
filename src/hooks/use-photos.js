@@ -23,7 +23,6 @@ export default function usePhotos() {
       setPhotos(followedUserPhotos);
     }
 
-    console.log("user photos", userId);
     if (userId) {
       getTimelinePhotos();
     }

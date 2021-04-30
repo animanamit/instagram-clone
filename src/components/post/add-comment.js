@@ -15,9 +15,19 @@ export default function AddComment({
     user: { displayName }
   } = useContext(UserContext);
 
+  const { firebase, FieldValue } = useContext(FirebaseContext);
+
   const handleSubmitComment = event => {
     event.preventDefault();
-    return null;
+    setComments([{ displayName, comment }, ...comments]);
+    setComment("");
+    return firebase
+      .firestore()
+      .collection("photos")
+      .doc(docId)
+      .update({
+        comments: FieldValue.arrayUnion({ displayName, comment })
+      });
   };
 
   return (
@@ -38,7 +48,19 @@ export default function AddComment({
           type="text"
           name="add-comment"
           placeholder="Add a comment..."
-        ></input>
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+          ref={commentInput}
+        />
+        <button
+          className={`text-sm font-bold text-blue-medium ${!comment &&
+            "opacity-25"}`}
+          type="button"
+          disabled={comment.length < 1}
+          onClick={handleSubmitComment}
+        >
+          Post
+        </button>
       </form>
     </div>
   );
