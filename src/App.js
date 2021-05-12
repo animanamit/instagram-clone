@@ -14,6 +14,7 @@ const Dashboard = lazy(() => import("./pages/dashboard"));
 const NotFound = lazy(() => import("./pages/notfound"));
 
 function App() {
+  // authenticated user account
   const { user } = useAuthListener();
   return (
     <UserContext.Provider value={{ user }}>

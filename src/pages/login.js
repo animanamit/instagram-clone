@@ -44,8 +44,12 @@ export default function Login() {
               className="mt-2 w-6/12"
             />
           </h1>
-          {error && <p className="mb-4 text-xs text-red-primary">{error}</p>}
-          <form onSubmit={handleLogin} method="POST">
+          {error && (
+            <p data-testid="error" className="mb-4 text-xs text-red-primary">
+              {error}
+            </p>
+          )}
+          <form onSubmit={handleLogin} method="POST" data-testid="login">
             <input
               aria-label="Enter your email address"
               type="text"
@@ -80,7 +84,11 @@ export default function Login() {
         <div className="flex justify-center items-center flex-col w-full bg-white p-4 border rounded border-gray-primary">
           <p className="text-sm ">
             Don't have an account?{` `}
-            <Link to={ROUTES.SIGNUP} className="font-bold text-blue-medium">
+            <Link
+              to={ROUTES.SIGNUP}
+              className="font-bold text-blue-medium"
+              data-testid="signup"
+            >
               Sign up
             </Link>
           </p>

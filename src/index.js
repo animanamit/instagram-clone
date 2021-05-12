@@ -12,6 +12,7 @@ import { FieldValue, firebase } from "./lib/firebase";
 
 const HotApp = hot(App);
 
+// wrap the app in a firebase context provider so that the entire app has access to firebase
 ReactDOM.render(
   <FirebaseContext.Provider value={{ firebase, FieldValue }}>
     <HotApp />
